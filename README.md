@@ -26,6 +26,5 @@ CREATE TABLE public.usuario (
 );
 ```
 
-Este proyecto es ideal para aquellos que buscan aprender cómo configurar múltiples entornos en aplicaciones de Java Web, simplificando el despliegue en producción y controlando las configuraciones a través de perfiles de Maven.
 
 ---
