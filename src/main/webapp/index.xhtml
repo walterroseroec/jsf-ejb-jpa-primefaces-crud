@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces"
+      xmlns:f="jakarta.faces.core">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />
+        <h:outputStylesheet library="css" name="layout.css" />
+    </h:head>
+    <h:body>
+        <div class="layout-wrapper">
+            <div class="layout-content layout-content-inner">
+                <div class="m-4 crud-demo">
+                    <div class="flex justify-content-center flex-wrap">
+                        <h1 class="flex align-items-center justify-content-center font-bold m-2">
+                            CRUD CON JSF 4.0 6 
+                        </h1>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-12">
+                            <h:form id="form">
+                                <p:growl id="messages" showDetail="true" />
+
+                                <p:toolbar>
+                                    <p:toolbarGroup>
+                                        <p:commandButton 
+                                            value="Nuevo" 
+                                            icon="pi pi-plus"
+                                            actionListener="#{usuarioMB.nuevo()}"
+                                            update=":dialogs:panel-content" 
+                                            oncomplete="PF('dlgUsuarioRegistro').show()"
+                                            styleClass="ui-button-success" 
+                                            style="margin-right: .5rem">
+                                            <p:resetInput target=":dialogs:panel-content" />
+                                        </p:commandButton>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+
+                                <p:dataTable id="dt-usuarios" 
+                                             widgetVar="dtUsuarios"
+                                             var="usuario" 
+                                             value="#{usuarioMB.usuarios}"
+                                             reflow="true" 
+                                             styleClass="products-table" 
+                                             paginator="true" 
+                                             rows="10" 
+                                             paginatorPosition="bottom"
+                                             >
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">Usuarios</span>
+                                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtUsuarios').filter()" placeholder="Search" />
+                                            </span>
+                                        </div>
+                                    </f:facet>
+
+                                    <p:column headerText="Nombre"
+                                              filterBy="#{usuario.nombre}">
+                                        <h:outputText value="#{usuario.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Nick" 
+                                              filterBy="#{usuario.nickName}">
+                                        <h:outputText value="#{usuario.nickName}" />
+                                    </p:column>
+                                    <p:column ariaHeaderText="Acciones">
+                                        <p:commandButton icon="pi pi-pencil" 
+                                                         update=":dialogs:panel-content"
+                                                         oncomplete="PF('dlgUsuarioRegistro').show()"
+                                                         styleClass="edit-button rounded-button ui-button-success"
+                                                         process="@this">
+                                            <f:setPropertyActionListener value="#{usuario}" target="#{usuarioMB.usuario}" />
+                                            <p:resetInput target="dialogs:panel-content" />
+                                        </p:commandButton>
+                                        <p:commandButton class="ui-button-warning rounded-button" 
+                                                         icon="pi pi-trash"
+                                                         process="@this"
+                                                         oncomplete="PF('dlgEliminarUsuario').show()">
+                                            <f:setPropertyActionListener value="#{usuario}" target="#{usuarioMB.usuario}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+
+                            </h:form>
+
+                            <h:form id="dialogs">
+                                <p:dialog 
+                                    header="Usuario" 
+                                    showEffect="fade" 
+                                    modal="true" 
+                                    widgetVar="dlgUsuarioRegistro"
+                                    responsive="true">
+                                    <p:outputPanel id="panel-content" class="ui-fluid">
+                                        <p:outputPanel rendered="#{not empty usuarioMB.usuario}">
+                                            <div class="field">
+                                                <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                                                <p:inputText 
+                                                    id="nombre" 
+                                                    value="#{usuarioMB.usuario.nombre}" 
+                                                    required="true" />
+                                            </div>
+                                            <div class="field">
+                                                <p:outputLabel for="nickname">Nick Name</p:outputLabel>
+                                                <p:inputText 
+                                                    id="nickname" 
+                                                    value="#{usuarioMB.usuario.nickName}" 
+                                                    required="true" />
+                                            </div>
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Guardar" 
+                                                         icon="pi pi-check" 
+                                                         actionListener="#{usuarioMB.guardar()}"
+                                                         update="panel-content" 
+                                                         process="panel-content @this" />
+                                        <p:commandButton value="Cancelar" 
+                                                         icon="pi pi-times" 
+                                                         onclick="PF('dlgUsuarioRegistro').hide()"
+                                                         class="ui-button-secondary"
+                                                         type="button" />
+                                    </f:facet>
+                                </p:dialog>
+
+                                <p:confirmDialog widgetVar="dlgEliminarUsuario" 
+                                                 showEffect="fade" 
+                                                 width="300"
+                                                 message="Eliminar el usuario?" 
+                                                 header="Confirmar" 
+                                                 severity="warn">
+                                    <p:commandButton value="Si
+                                                     " icon="pi pi-check" 
+                                                     actionListener="#{usuarioMB.eliminar()}"
+                                                     process="@this" 
+                                                     oncomplete="PF('dlgEliminarUsuario').hide()" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                                     onclick="PF('dlgEliminarUsuario').hide()" />
+                                </p:confirmDialog>
+                            </h:form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
