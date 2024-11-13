@@ -8,11 +8,11 @@ Puedes ver a detalle el proyecto directamente desde mi canal de YouTube [https:/
 
 
 ##  Herramientas utilizadas:
-- **Java [11 o Superior]** como lenguaje de programación.
+- **Java [17 o Superior]** como lenguaje de programación.
 - **PostgreSQL  [12 o Superior]** como motor de la base de datos.
 - **Jakarta Server Faces [4.0]** para la creación de las vistas en XHTML.
 - **PrimeFaces [14.0.0]**  para el uso de componentes.
-- **WildFly [34.0.0.FINAL]** para el despliegue de aplicaciones.
+- **WildFly [27.0.0.FINAL] - [34.0.0.FINAL]** para el despliegue de aplicaciones.
 
 
 ## Script de la base de datos
